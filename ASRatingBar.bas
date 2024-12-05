@@ -22,6 +22,8 @@ V1.03
 V1.04
 	-Fix names in designer
 	-Add set MaximumRating
+V1.05
+	-Add TouchStateChanged
 #End If
 
 #DesignerProperty: Key: MaxRating, DisplayName: MaxRating, FieldType: Int, DefaultValue: 10, MinRange: 1
@@ -29,6 +31,7 @@ V1.04
 
 #Event: RatingChange(rating as int)
 #Event: RatingChanged(rating as int)
+#Event: TouchStateChanged (Pressed As Boolean)
 
 Sub Class_Globals
 	Private mEventName As String 'ignore
@@ -39,6 +42,7 @@ Sub Class_Globals
 	Private xBackgroundView As B4XView
 	Private xbmp_image ,xbmp_grey_image As B4XBitmap
 	Private current_ranking As Int
+	Private Pressed As Boolean
 	
 	Private g_enabled As Boolean = True
 	
@@ -146,12 +150,13 @@ Private Sub CheckRanting(x As Float)
 		BuildRanking
 	End If
 End Sub
-'sets a rating
+
+'gets and sets the rating
 Public Sub setCurrentRating(Rating As Int)	
 	current_ranking = Rating
 	BuildRanking	
 End Sub
-'gets the current rating
+
 Public Sub getCurrentRating As Int
 	Return current_ranking
 End Sub
@@ -187,7 +192,8 @@ Private Sub xBackgroundView_Touch (Action As Int, X As Float, Y As Float)
 #End IF
 	If g_enabled = False Then Return False'ignore
 	If Action = xBackgroundView.TOUCH_ACTION_DOWN Then
-		
+		Pressed = True
+		RaiseTouchStateEvent
 		CheckRanting(X)
 		
 	Else If Action = xBackgroundView.TOUCH_ACTION_MOVE Then
@@ -195,10 +201,10 @@ Private Sub xBackgroundView_Touch (Action As Int, X As Float, Y As Float)
 		CheckRanting(X)
 		
 	Else If Action = xBackgroundView.TOUCH_ACTION_UP Then
-		
+		Pressed = False
 		CheckRanting(X)
 		RatingChanged
-		
+		RaiseTouchStateEvent
 	End If
 	
 	
@@ -221,6 +227,13 @@ Private Sub RatingChanged
 		CallSub2(mCallBack, mEventName & "_RatingChanged",current_ranking)
 	End If
 End Sub
+
+Private Sub RaiseTouchStateEvent
+	If xui.SubExists(mCallBack, mEventName & "_TouchStateChanged", 1) Then
+		CallSubDelayed2(mCallBack, mEventName & "_TouchStateChanged", Pressed)
+	End If
+End Sub
+
 
 #End Region
 
