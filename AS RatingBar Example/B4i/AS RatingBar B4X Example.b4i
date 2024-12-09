@@ -1,4 +1,4 @@
-﻿Build1=Default,com.as.ratingbar
+﻿Build1=Default,com.stoltex.ratingbar
 File1=frm_main.bil
 FileGroup1=Default Group
 Group=Default Group
@@ -13,14 +13,15 @@ Version=8.45
 @EndOfDesignText@
 'Code module
 #Region  Project Attributes 
-	#ApplicationLabel: B4i Example
+	#ApplicationLabel: AS RatingBar Example
 	#Version: 1.0.0 
 	'Orientation possible values: Portrait, LandscapeLeft, LandscapeRight and PortraitUpsideDown
 	#iPhoneOrientations: Portrait, LandscapeLeft, LandscapeRight
 	#iPadOrientations: Portrait, LandscapeLeft, LandscapeRight, PortraitUpsideDown
 	#Target: iPhone, iPad
 	#ATSEnabled: True
-	#MinVersion: 8
+	#MinVersion: 11
+	#ProvisionFile: StolteX.Mobileprovision
 #End Region
 
 Sub Process_Globals

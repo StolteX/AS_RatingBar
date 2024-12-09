@@ -24,6 +24,8 @@ V1.04
 	-Add set MaximumRating
 V1.05
 	-Add TouchStateChanged
+V1.06
+	-Better click handling
 #End If
 
 #DesignerProperty: Key: MaxRating, DisplayName: MaxRating, FieldType: Int, DefaultValue: 10, MinRange: 1
@@ -103,10 +105,12 @@ Private Sub Base_Resize (Width As Double, Height As Double)
   
 End Sub
 
+#Region InternFunctions
+
 Private Sub AddRanking
 	xBackgroundView.RemoveAllViews
 	For i = 0 To g_MaxRating -1
-		Dim ximg_image As B4XView = CreateImageView("")
+		Dim ximg_image As B4XView = CreateImageView("xiv_Rank")
 		xBackgroundView.AddView(ximg_image,0,0,0,0)
 	Next
 	Base_Resize(mBase.Width,mBase.Height)
@@ -151,6 +155,10 @@ Private Sub CheckRanting(x As Float)
 	End If
 End Sub
 
+#End Region
+
+#Region Properties
+
 'gets and sets the rating
 Public Sub setCurrentRating(Rating As Int)	
 	current_ranking = Rating
@@ -172,10 +180,12 @@ Public Sub SetImages(active_image As B4XBitmap,inactive_image As B4XBitmap)
 	xbmp_grey_image = inactive_image
 	Base_Resize(mBase.Width,mBase.Height)
 End Sub
+
 'gets the active image
 Public Sub getActiveImage As B4XBitmap
 	Return xbmp_image
 End Sub
+
 'gets the inactive image
 Public Sub getInactiveImage As B4XBitmap
 	Return xbmp_grey_image
@@ -183,6 +193,15 @@ End Sub
 
 Public Sub setEnabled(enable As Boolean)
 	g_enabled = enable
+End Sub
+
+#End Region
+
+#Region ViewEvents
+
+Private Sub xiv_Rank_Click
+	Dim xiv_Rank As B4XView = Sender
+	CheckRanting(xiv_Rank.Left + xiv_Rank.Width/2)
 End Sub
 
 #If B4A
@@ -213,6 +232,8 @@ Private Sub xBackgroundView_Touch (Action As Int, X As Float, Y As Float)
 	#End If
 	
 End Sub
+
+#End Region
 
 #Region Events
 
